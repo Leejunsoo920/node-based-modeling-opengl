@@ -7,7 +7,7 @@ This project is a work in progress, and many features are still under developmen
 
 # Features
 ![Demo](asset/gizmo.gif)
-- Full save & load support for all nodes and their connections
+- save & load for all nodes and link
 - Provides gizmo and UI controls that respond to the currently selected node
 
 
