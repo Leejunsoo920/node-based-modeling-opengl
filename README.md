@@ -7,8 +7,8 @@ This project is a work in progress. Many parts are still incomplete or subject t
 
 # Features
 ![Demo](asset/gizmo.gif)
-- Provides gizmos for modifying object vertices directly
-- Supports interactive manipulation of `vec3` and `mat4` data through gizmos
+- Full save & load support for all nodes and their connections
+- Provides gizmo and UI controls that respond to the currently selected node
 
 
 ## Dependencies
