@@ -4,13 +4,12 @@ The project references code from [LearnOpenGL](https://learnopengl.com/), and no
 
 ![Demo](asset/demo.gif)
 ## 🧩 Dependencies
-- [GLFW](https://www.glfw.org/)
-- [Glad](https://glad.dav1d.de/)
-- [ImGui](https://github.com/ocornut/imgui)
-- [ImGuizmo]((https://github.com/CedricGuillemet/ImGuizmo)) (modified)
-- [GLM](https://github.com/g-truc/glm)
-- [stb_image](https://github.com/nothings/stb)
+- GLFW
+- Glad
+- ImGui
+- ImGuizmo
+- GLM
+- stb_image
 
 ## 📚 References
-
 - [LearnOpenGL](https://learnopengl.com/)  
