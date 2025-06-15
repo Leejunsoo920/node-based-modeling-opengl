@@ -1,6 +1,6 @@
 # node-based-modeling-opengl
 node-based modeling tool developed for personal CG studies and experiments.  
-This project is a work in progress. Many parts are still incomplete or subject to change.
+This project is a work in progress, and many features are still under development.
 
 ![Demo](asset/demo.gif)
 
