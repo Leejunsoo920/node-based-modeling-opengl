@@ -639,7 +639,7 @@ void Node_manager::select_gen_node(objects_map_t& pre_object_map)
 			ImVec2 temp = ImVec2(0, 0);
 			ImVec2 offset = ImGui::GetCursorScreenPos() + viewState.mPosition * viewState.mFactor;
 			ImVec2 nodeRectangleMin = offset + temp * viewState.mFactor;
-			delegate.gen_node(nodeRectangleMin, animation_node_names[reseach_node_num], pre_animation_map["walk"]);
+			delegate.gen_node(nodeRectangleMin, animation_node_names[reseach_node_num], pre_animation_map["run"]);
 			reseach_node_num = -1;
 		}
 
@@ -1060,6 +1060,11 @@ void Node_manager::imgui_node_property_render(
 
 					}
 				
+				}
+				else
+				{
+					delegate.mNodes[graph_index]->select_vertex_num.clear();
+
 				}
 			}
 

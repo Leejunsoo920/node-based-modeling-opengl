@@ -1006,7 +1006,7 @@ public:
 
                                 }
 
-
+                                /*
 
                                 auto vertex_index = new_vertices.end() - new_vertices.begin()  - 2 * vertex_size;
 
@@ -1040,13 +1040,43 @@ public:
                                     }
 
                                 }
+                                */
+                                auto base_index = new_vertices.size() - 2 * vertex_size;
+                                if (bone_size > 1 && i > 0)
+                                {
+                                    // 이전 단면의 시작 인덱스
+
+
+
+                                    for (unsigned int k = 0; k < vertex_size; ++k)
+                                    {
+                                        // 다음 인덱스를 원형으로 돌림 (0 → 1 → ... → vertex_size-1 → 0)
+                                        unsigned int next_k = (k + 1) % vertex_size;
+
+                                        // 현재 단면과 이전 단면을 잇는 네 정점
+                                        unsigned int i0 = base_index + k;
+                                        unsigned int i1 = base_index + next_k;
+                                        unsigned int i2 = base_index + k + vertex_size;
+                                        unsigned int i3 = base_index + next_k + vertex_size;
+
+                                        // 첫 삼각형 (i0, i2, i3)
+                                        new_indices.emplace_back(i0);
+                                        new_indices.emplace_back(i2);
+                                        new_indices.emplace_back(i3);
+
+                                        // 둘째 삼각형 (i0, i3, i1)
+                                        new_indices.emplace_back(i0);
+                                        new_indices.emplace_back(i3);
+                                        new_indices.emplace_back(i1);
+                                    }
+                                }
                                 else
                                 {
 
                                     for (unsigned int k = 0; k < vertex_size; k++)
                                     {
 
-                                        new_indices.emplace_back(vertex_index - k);
+                                        new_indices.emplace_back(base_index - k);
 
 
                                     }
