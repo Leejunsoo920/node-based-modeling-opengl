@@ -1,6 +1,7 @@
 # node-based-modeling-opengl
 node-based modeling tool developed for personal CG studies and experiments.  
-This project is a work in progress, and many features are still under development.
+This project is a work in progress, and features are still under development.
+The node UI was developed based on ImGuizmo.
 
 ![Demo](asset/demo.gif)
 ![Demo](asset/gizmo.gif)
