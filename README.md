@@ -18,3 +18,6 @@ This project is a work in progress, and many features are still under developmen
 
 ## References
 - [LearnOpenGL](https://learnopengl.com/)  
+
+## Model&Animation
+-Mixamo
