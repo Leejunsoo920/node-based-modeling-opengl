@@ -115,15 +115,13 @@ public:
                 std::visit([this, projection, view, camera_position](auto&& arg1) {
                     using T1 = std::decay_t<decltype(arg1)>;
 
-                    if constexpr (std::is_same_v<T1, std::shared_ptr<Object_setting>>) {
-
+                    if constexpr (std::is_same_v<T1, std::shared_ptr<Object_setting>>) 
+                    {
                         arg1->wolrd_object_Draw(projection, view, camera_position);
                         return true;
-
                     }
                     else
                         return false;
-
                     }, it);  // 
             }
 
@@ -530,62 +528,34 @@ public:
     {
         if (input_node.size() > 0)
         {
-
-
             this->value = input_node[0]->value;
-
-
             frame = frame_manager.now_frame;
-
-
-
             std::visit([this](auto&& arg1) {
                 using T1 = std::decay_t<decltype(arg1)>;
                 if constexpr (std::is_same_v<T1, std::shared_ptr<Object_setting>>) 
                 {
-
                     real_act(arg1->object);
-
                     arg1->object.final_bone_matrix.clear();
-                    
+                 
                     for (auto& it : bone_matrices)
                     {
                         arg1->object.final_bone_matrix.emplace_back(it);
                     }
-
-
                     evaluated = true;
-
                 }
 
             }, (*this->value)[0]);  // 
 
             input_node[0]->evaluated = false;
-
-
-
-
-
-
         }
         else
         {
             this->value = nullptr;
         }
-
-
-
-
-
-
     }
 
     void real_act(Model& model)
     {
-
-
-
-
         if (this->initial_value == nullptr)
         {
             debug.set_text("error : don't have animation in this model", 0.1);
