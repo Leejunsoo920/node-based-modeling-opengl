@@ -27,7 +27,7 @@ public:
     void evaluate() override
     {
 
-        if (input_node.size() >= 1) 
+        if (input_node.size() >= 1)
         {
 
             this->value = input_node[0]->value;
@@ -151,12 +151,12 @@ public:
 
 
                 }
-                
+
 
 
             }
 
-            
+
 
 
 
@@ -192,7 +192,7 @@ public:
                     }, (*this->value)[i]);  // 
 
             }
-            
+
 
 
         }
@@ -295,7 +295,7 @@ private:
 
             local_bone_T[i] = bone_Q.quaternion_to_r_matrix();
             global_bone_T[i] = global_bone_T[i] * local_bone_T[i];
-            
+
             global_bone_T[i + 1] = glm::translate(global_bone_T[i], glm::vec3(0, length_of_next_point, 0));
         }
 
@@ -328,7 +328,7 @@ public:
     {
         now_output_count = output_node_num;
 
-        if (input_node.size() >= 2) 
+        if (input_node.size() >= 2)
         {
 
 
@@ -375,7 +375,7 @@ public:
 
                     float gap = 1 / static_cast<float>(curve_point_num - 1);
 
-                    
+
                     for (size_t i = 0; i + 2 < curve_point_vec3.size(); i += 2)
                     {
                         glm::vec3 p0 = curve_point_vec3[i];
@@ -432,7 +432,7 @@ public:
         return Draw_vector_vec3(projection, view, camera_position);
     }
 
-    
+
 
 
 
@@ -442,7 +442,7 @@ private:
     {
         ImGui::BeginChild((name).c_str(), ImVec2(450, 200), ImGuiWindowFlags_NoTitleBar);
         {
-            
+
 
             base_imgui();
 
@@ -607,7 +607,7 @@ public:
 
             }
         }
-        
+
 
 
 
@@ -716,11 +716,7 @@ public:
 
 
         Mesh new_mesh(generate_circle(initial_radius, initial_vertex_num), new_indices, new_texture);
-
-
         temp_Object_setting.object.meshes.push_back(new_mesh);
-
-
 
 
         initial_value.emplace_back(std::make_shared<Object_setting>(
@@ -754,28 +750,28 @@ public:
             }
             evaluated = true;
         }
-        else if(input_node.size() > 0)
+        else if (input_node.size() > 0)
         {
             std::vector<glm::vec3> vertices;
             std::vector<Vertex> return_vertices;
             for (unsigned int i = 0; i < input_node[0]->value->size(); i++)
             {
-                std::visit([&](auto&& arg1) 
+                std::visit([&](auto&& arg1)
                     {
-                    using T1 = std::decay_t<decltype(arg1)>;
-                    if constexpr (std::is_same_v<T1, glm::vec3>) {
+                        using T1 = std::decay_t<decltype(arg1)>;
+                        if constexpr (std::is_same_v<T1, glm::vec3>) {
 
-                        vertices.emplace_back(arg1);
+                            vertices.emplace_back(arg1);
 
-                    }
-                    }, (*input_node[0]->value)[i]); 
+                        }
+                    }, (*input_node[0]->value)[i]);
 
             }
 
-            for (int i = 0; i < vertices.size(); ++i) 
+            for (int i = 0; i < vertices.size(); ++i)
             {
                 Vertex this_vertex;
-                this_vertex.Position = glm::vec3(vertices[i].x,vertices[i].y, vertices[i].z);
+                this_vertex.Position = glm::vec3(vertices[i].x, vertices[i].y, vertices[i].z);
                 return_vertices.emplace_back(this_vertex);
             }
 
@@ -798,12 +794,12 @@ public:
 
         }
 
-    
-    
-    
+
+
+
     };
 
-    
+
     bool Draw(
         const glm::mat4& projection,
         const glm::mat4& view,
@@ -818,7 +814,7 @@ public:
             std::visit([this, &ret](auto&& arg1) {
                 using T1 = std::decay_t<decltype(arg1)>;
 
-                
+
                 if constexpr (std::is_same_v<T1, std::shared_ptr<Object_setting>>) {
 
                     for (unsigned int i = 0; i < arg1->object.meshes[0].vertices.size() - 1; i++)
@@ -847,7 +843,7 @@ public:
 
     }
 
-    
+
 
 private:
     void imgui_render()
@@ -933,7 +929,7 @@ public:
         float y,
         bool mSelected
 
-    ) : Node_template_func(name, ID_num, templateIndex, x, y, mSelected){}
+    ) : Node_template_func(name, ID_num, templateIndex, x, y, mSelected) {}
 
     void evaluate() override
     {
@@ -1001,74 +997,47 @@ public:
 
                                     new_vertices.back().Position = temp_mat4[i] * glm::vec4(origin_vertices[j].Position, 1);
 
-                                  
+
 
 
                                 }
 
-                                /*
 
-                                auto vertex_index = new_vertices.end() - new_vertices.begin()  - 2 * vertex_size;
+
+                                auto vertex_index = new_vertices.end() - new_vertices.begin() - 2 * vertex_size;
 
                                 if (bone_size > 1)
                                 {
                                     if (i > 0)
                                     {
-                                        new_indices.emplace_back(vertex_index);
-                                        new_indices.emplace_back(vertex_index + vertex_size);
-                                        new_indices.emplace_back(vertex_index + vertex_size + 1);
 
-
-                                        new_indices.emplace_back(vertex_index);
-                                        new_indices.emplace_back(vertex_index +1);
-                                        new_indices.emplace_back(vertex_index + 1 + vertex_size);
-
-
-                                        for (unsigned int k = 1; k < vertex_size; k++)
+                                        for (unsigned int k = 0; k < vertex_size - 1; k++)
                                         {
 
                                             new_indices.emplace_back(vertex_index + k);
                                             new_indices.emplace_back(vertex_index + vertex_size + k);
                                             new_indices.emplace_back(vertex_index + vertex_size + 1 + k);
 
-
                                             new_indices.emplace_back(vertex_index + k);
-                                            new_indices.emplace_back(vertex_index + 1 + k);
                                             new_indices.emplace_back(vertex_index + 1 + vertex_size + k);
+                                            new_indices.emplace_back(vertex_index + 1 + k);
+
 
                                         }
+
+                                        //// the last primitive of sweep 
+                                        //// making primitive by first vertex and last vertex 
+                                        new_indices.emplace_back(vertex_index + vertex_size - 1);
+                                        new_indices.emplace_back(vertex_index + vertex_size - 1 + vertex_size);
+                                        new_indices.emplace_back(vertex_index + vertex_size);
+
+                                        new_indices.emplace_back(vertex_index + vertex_size - 1);
+                                        new_indices.emplace_back(vertex_index + vertex_size);
+                                        new_indices.emplace_back(vertex_index);
+
+
                                     }
 
-                                }
-                                */
-                                auto base_index = new_vertices.size() - 2 * vertex_size;
-                                if (bone_size > 1 && i > 0)
-                                {
-                                    // 이전 단면의 시작 인덱스
-
-
-
-                                    for (unsigned int k = 0; k < vertex_size; ++k)
-                                    {
-                                        // 다음 인덱스를 원형으로 돌림 (0 → 1 → ... → vertex_size-1 → 0)
-                                        unsigned int next_k = (k + 1) % vertex_size;
-
-                                        // 현재 단면과 이전 단면을 잇는 네 정점
-                                        unsigned int i0 = base_index + k;
-                                        unsigned int i1 = base_index + next_k;
-                                        unsigned int i2 = base_index + k + vertex_size;
-                                        unsigned int i3 = base_index + next_k + vertex_size;
-
-                                        // 첫 삼각형 (i0, i2, i3)
-                                        new_indices.emplace_back(i0);
-                                        new_indices.emplace_back(i2);
-                                        new_indices.emplace_back(i3);
-
-                                        // 둘째 삼각형 (i0, i3, i1)
-                                        new_indices.emplace_back(i0);
-                                        new_indices.emplace_back(i3);
-                                        new_indices.emplace_back(i1);
-                                    }
                                 }
                                 else
                                 {
@@ -1076,7 +1045,7 @@ public:
                                     for (unsigned int k = 0; k < vertex_size; k++)
                                     {
 
-                                        new_indices.emplace_back(base_index - k);
+                                        new_indices.emplace_back(vertex_index - k);
 
 
                                     }
@@ -1115,12 +1084,12 @@ public:
 
 
 
-                
-            
+
+
             }
 
 
-           
+
 
         }
 
@@ -1308,10 +1277,10 @@ public:
 
                             glm::mat4 rotation_mat4 = glm::mat4(1.0f);
 
-                            rotation_mat4[0] = glm::vec4(glm::normalize(glm::vec3(arg0[0])), 0.0f); 
-                            rotation_mat4[1] = glm::vec4(glm::normalize(glm::vec3(arg0[1])), 0.0f);  
-                            rotation_mat4[2] = glm::vec4(glm::normalize(glm::vec3(arg0[2])), 0.0f);  
-                            rotation_mat4[3] = glm::vec4(0, 0, 0, 1);  
+                            rotation_mat4[0] = glm::vec4(glm::normalize(glm::vec3(arg0[0])), 0.0f);
+                            rotation_mat4[1] = glm::vec4(glm::normalize(glm::vec3(arg0[1])), 0.0f);
+                            rotation_mat4[2] = glm::vec4(glm::normalize(glm::vec3(arg0[2])), 0.0f);
+                            rotation_mat4[3] = glm::vec4(0, 0, 0, 1);
 
 
 
@@ -1319,7 +1288,7 @@ public:
                             initial_value = rotation_mat4;
 
                         }
-                        }, (*input_node[1]->value)[0]);  
+                        }, (*input_node[1]->value)[0]);
 
 
                 }
@@ -1331,12 +1300,12 @@ public:
 
 
 
-                    
+
                     std::visit([&](auto&& arg1) {
                         using T1 = std::decay_t<decltype(arg1)>;
 
 
-                        if constexpr (std::is_same_v<T1, glm::mat4>) 
+                        if constexpr (std::is_same_v<T1, glm::mat4>)
                         {
 
 
@@ -1357,7 +1326,7 @@ public:
 
                             global_dir.emplace_back(rotated);
                         }
-                        }, (*this->value)[i]);  
+                        }, (*this->value)[i]);
 
                 }
 
@@ -1523,7 +1492,7 @@ public:
                             glm::vec3 position = glm::vec3(arg1[3]);
 
                             glm::vec3 z_dir = glm::vec3(0, 0, 1);
-                            z_dir = arg1 * glm::vec4(z_dir,1.0f);
+                            z_dir = arg1 * glm::vec4(z_dir, 1.0f);
 
                             float rotation_angle = glm::dot(glm::vec3(0, 1, 0), z_dir);
 
@@ -1668,7 +1637,7 @@ private:
 class Node_func_mesh_projection : public Node_template_func
 {
 public:
-    
+
 
     Node_func_mesh_projection(
         const std::string& name,
@@ -1686,7 +1655,7 @@ public:
 
         if (input_node.size() >= 2) {
 
-            if ((*input_node[0]->value).size() > 0 && (*input_node[1]->value).size() > 0 )
+            if ((*input_node[0]->value).size() > 0 && (*input_node[1]->value).size() > 0)
             {
 
                 std::vector<int> vertex_num;
@@ -1696,60 +1665,60 @@ public:
                 auto& it0 = (*input_node[0]->value)[0];
                 auto& it1 = (*input_node[1]->value)[0];
 
-                std::visit([&](auto&& arg1, auto&& arg2) 
+                std::visit([&](auto&& arg1, auto&& arg2)
                     {
-                    using T1 = std::decay_t<decltype(arg1)>;
-                    using T2 = std::decay_t<decltype(arg2)>;
+                        using T1 = std::decay_t<decltype(arg1)>;
+                        using T2 = std::decay_t<decltype(arg2)>;
 
 
-                    if constexpr (
-                        std::is_same_v<T1, shared_ptr<Object_setting>> &&
-                        std::is_same_v<T2, shared_ptr<Object_setting>>
-                        )
-                    {
-
-                        std::vector<glm::vec3> target_object_vertex;
-                        std::vector<int> target_object_indices;
-
-                        
-
-
-                        for (auto& vertex : arg1->object.meshes[0].vertices)
-                        {
-                            target_object_vertex.emplace_back(vertex.Position);
-                        }
-                        for (auto& index : arg1->object.meshes[0].indices)
-                        {
-                            target_object_indices.emplace_back(index);
-                        }
-
-
-                        for (unsigned int i = 0; i < arg2->object.meshes[0].vertices.size(); i++)
+                        if constexpr (
+                            std::is_same_v<T1, shared_ptr<Object_setting>> &&
+                            std::is_same_v<T2, shared_ptr<Object_setting>>
+                            )
                         {
 
-                            real_act(target_object_vertex, target_object_indices, arg2->object.meshes[0].vertices[i].Position);
+                            std::vector<glm::vec3> target_object_vertex;
+                            std::vector<int> target_object_indices;
+
+
+
+
+                            for (auto& vertex : arg1->object.meshes[0].vertices)
+                            {
+                                target_object_vertex.emplace_back(vertex.Position);
+                            }
+                            for (auto& index : arg1->object.meshes[0].indices)
+                            {
+                                target_object_indices.emplace_back(index);
+                            }
+
+
+                            for (unsigned int i = 0; i < arg2->object.meshes[0].vertices.size(); i++)
+                            {
+
+                                real_act(target_object_vertex, target_object_indices, arg2->object.meshes[0].vertices[i].Position);
+
+                            }
+
+
+
+
+
 
                         }
-
-
-
-
-
-
-                    }
-                    else
-                    {
-                        return;
-                    }
+                        else
+                        {
+                            return;
+                        }
 
                     }, it0, it1);  // 
 
 
-                    this->value_vector_size = (*this->value).size();
-                    evaluated = true;
+                this->value_vector_size = (*this->value).size();
+                evaluated = true;
 
 
-                
+
 
 
 
@@ -1826,8 +1795,6 @@ private:
         glm::vec3 closest;
 
         for (size_t i = 0; i < indices.size(); i += 3) {
-            if (indices[i] >= 60 || indices[i + 1] >= 60 || indices[i + 2] >= 60)
-                continue;
             const glm::vec3& a = vertices[indices[i]];
             const glm::vec3& b = vertices[indices[i + 1]];
             const glm::vec3& c = vertices[indices[i + 2]];
@@ -1845,7 +1812,6 @@ private:
     }
 
     glm::vec3 closestPointOnTriangle(const glm::vec3& p, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
-        // Möller–Trumbore 기반 알고리즘
         const glm::vec3 ab = b - a;
         const glm::vec3 ac = c - a;
         const glm::vec3 ap = p - a;
@@ -1942,7 +1908,7 @@ public:
 
                             global_dir.emplace_back(glm::rotate(arg1, glm::radians(initial_value), glm::vec3(0, 1, 0)));
                         }
-                        }, (*this->value)[i]);  // 
+                        }, (*this->value)[i]);  //
 
                 }
 
@@ -2010,7 +1976,7 @@ public:
                         debug.set_axis("global matrix", arg1);
 
                     }
-                    }, (*this->value)[i]);  // 
+                    }, (*this->value)[i]);  //
 
             }
 
@@ -2080,7 +2046,7 @@ public:
 
         (this->value)->clear();
         (this->value)->push_back(frame_manager.now_frame);
-    
+
         evaluated = true;
 
     }
