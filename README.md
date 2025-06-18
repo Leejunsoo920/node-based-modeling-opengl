@@ -10,19 +10,17 @@ The node UI was developed based on ImGuizmo.
 
 
 ## Dependencies
-- GLFW
-- Glad
-- ImGui
-- ImGuizmo
-- GLM
-- stb_image
-
+- [GLFW](https://www.glfw.org/)  
+- [Glad](https://glad.dav1d.de/)  
+- [ImGui](https://github.com/ocornut/imgui)  
+- [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)  
+- [GLM](https://github.com/g-truc/glm)  
+- [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)  
 ---
 
 ## Attribution
 
-This project uses or is based on materials from **Joey de Vries**.
-
+This project includes code that is based on Joey de Vries’ LearnOpenGL tutorials.
 - Copyright © Joey de Vries  
 - Source: [https://learnopengl.com](https://learnopengl.com)  
 - Twitter: [@JoeyDeVriez](https://twitter.com/JoeyDeVriez)  
