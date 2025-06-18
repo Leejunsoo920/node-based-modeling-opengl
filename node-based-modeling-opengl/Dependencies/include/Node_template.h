@@ -22,11 +22,10 @@ std::is_same_v<T, glm::vec4> ||
 std::is_same_v<T, glm::mat3> ||
 std::is_same_v<T, glm::mat4>;
 
-// 기본 템플릿
+
 template<typename T, typename U, typename = void>
 struct is_math_compatible : std::false_type {};
 
-// 연산 가능한 타입에 대해 특수화
 template<typename T, typename U>
 struct is_math_compatible<T, U, std::void_t<
     decltype(std::declval<T>() + std::declval<U>()),
@@ -489,6 +488,11 @@ public:
 
 };
 
+
+// Based on "Camera class" from LearnOpenGL by Joey de Vries
+// https://learnopengl.com/Getting-started/Camera
+// Licensed under CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+// Twitter: https://twitter.com/JoeyDeVriez
 class Node_animation : public Node
 {
 public:

@@ -17,8 +17,19 @@ The node UI was developed based on ImGuizmo.
 - GLM
 - stb_image
 
-## References
-- [LearnOpenGL](https://learnopengl.com/)  
+---
 
-## Model&Animation
--Mixamo
+## Attribution
+
+This project uses or is based on materials from **Joey de Vries**.
+
+- Copyright © Joey de Vries  
+- Source: [https://learnopengl.com](https://learnopengl.com)  
+- Twitter: [@JoeyDeVriez](https://twitter.com/JoeyDeVriez)  
+- Licensed under: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+---
+
+## Models & Animation
+
+- Character and animation assets from [Mixamo](https://www.mixamo.com/)

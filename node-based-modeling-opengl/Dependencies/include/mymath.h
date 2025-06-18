@@ -361,7 +361,7 @@ public:
         //cout << inputctrl_global->local_axis.size() << "   " << inputctrl_global->local_axis.back()[0] << "  " << inputctrl_global->local_axis.back()[1] << "  " << inputctrl_global->local_axis.back()[2] << endl;
 
 
-        // 회전축과 회전각으로 쿼터니언 생성
+        //generate quaternion by angle and rotation direction vector
         w = std::cos(angle / 2.0f);
         float sin_half_angle = std::sin(angle / 2.0f);
 
@@ -510,9 +510,8 @@ public:
     glm::mat4 quaternion_to_r_matrix() 
     {
         glm::mat4 matrix;
-        // 쿼터니언 요소
         
-        // 4x4 회전행렬 계산
+        // calculate 4x4 rotaion matrix by quaternion
         matrix[0][0] = 1 - 2 * (y * y + z * z);
         matrix[0][1] = 2 * (x * y - w * z);
         matrix[0][2] = 2 * (x * z + w * y);
@@ -535,8 +534,6 @@ public:
 
         return matrix;
     }
-
-    // ﾃ箙ﾂ ｿﾀｹﾎｵ・
     friend std::ostream& operator<<(std::ostream& os, const Quaternion& q) {
         os << "(" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")";
         return os;
@@ -546,18 +543,18 @@ public:
     {
         glm::mat4 matrix;
 
-        // x축 회전만 반대로 적용 (y, z 회전은 동일)
+
         matrix[0][0] = 1 - 2 * (y * y + z * z);
-        matrix[0][1] = -2 * (x * y - w * z); // 부호 반전
-        matrix[0][2] = -2 * (x * z + w * y); // 부호 반전
+        matrix[0][1] = -2 * (x * y - w * z); 
+        matrix[0][2] = -2 * (x * z + w * y); 
         matrix[0][3] = 0;
 
-        matrix[1][0] = -2 * (x * y + w * z); // 부호 반전
+        matrix[1][0] = -2 * (x * y + w * z); 
         matrix[1][1] = 1 - 2 * (x * x + z * z);
         matrix[1][2] = 2 * (y * z - w * x);
         matrix[1][3] = 0;
 
-        matrix[2][0] = -2 * (x * z - w * y); // 부호 반전
+        matrix[2][0] = -2 * (x * z - w * y); 
         matrix[2][1] = 2 * (y * z + w * x);
         matrix[2][2] = 1 - 2 * (x * x + y * y);
         matrix[2][3] = 0;
@@ -574,15 +571,14 @@ public:
     {
         glm::mat4 matrix;
 
-        // Y축 회전만 반대로 적용 (X, Z 회전은 동일)
         matrix[0][0] = 1 - 2 * (y * y + z * z);
         matrix[0][1] = 2 * (x * y - w * z);
-        matrix[0][2] = -2 * (x * z + w * y); // 부호 반전
+        matrix[0][2] = -2 * (x * z + w * y); 
         matrix[0][3] = 0;
 
         matrix[1][0] = 2 * (x * y + w * z);
         matrix[1][1] = 1 - 2 * (x * x + z * z);
-        matrix[1][2] = -2 * (y * z - w * x); // 부호 반전
+        matrix[1][2] = -2 * (y * z - w * x); 
         matrix[1][3] = 0;
 
         matrix[2][0] = 2 * (x * z - w * y);
@@ -601,7 +597,6 @@ public:
     {
         glm::mat4 matrix;
 
-        // Z축 회전만 반대로 적용 (X, Y 회전은 동일)
         matrix[0][0] = 1 - 2 * (y * y + z * z);
         matrix[0][1] = 2 * (x * y - w * z);
         matrix[0][2] = 2 * (x * z + w * y);
@@ -612,8 +607,8 @@ public:
         matrix[1][2] = 2 * (y * z - w * x);
         matrix[1][3] = 0;
 
-        matrix[2][0] = -2 * (x * z - w * y); // 부호 반전
-        matrix[2][1] = -2 * (y * z + w * x); // 부호 반전
+        matrix[2][0] = -2 * (x * z - w * y); 
+        matrix[2][1] = -2 * (y * z + w * x); 
         matrix[2][2] = 1 - 2 * (x * x + y * y);
         matrix[2][3] = 0;
 
@@ -624,16 +619,6 @@ public:
 
         return matrix;
     }
-
-
-};
-
-class Mymath
-{
-public:
-
-
-
 
 
 };
@@ -651,12 +636,6 @@ public:
     {
         return (1.0f - t) * start + t * end;
     }
-
-
-
-
-
-
 };
 
 
@@ -858,7 +837,7 @@ public:
             }
         }
 
-        if (outT) *outT = tNear; // 가장 가까운 교차 지점 거리 저장
+        if (outT) *outT = tNear; 
         return true;
     }
 

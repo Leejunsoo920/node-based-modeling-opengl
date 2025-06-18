@@ -152,6 +152,12 @@ private:
 
 };
 
+
+
+// Based on "Camera class" from LearnOpenGL by Joey de Vries
+// https://learnopengl.com/Getting-started/Camera
+// Licensed under CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+// Twitter: https://twitter.com/JoeyDeVriez
 class Window
 {
 
@@ -218,7 +224,7 @@ public:
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
-        // glad 초기화
+        
         // ---------------------------------------
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {

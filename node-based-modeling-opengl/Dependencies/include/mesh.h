@@ -1,4 +1,9 @@
-﻿#ifndef MESH_H
+﻿// Based on "Camera class" from LearnOpenGL by Joey de Vries
+// https://learnopengl.com/Getting-started/Camera
+// Licensed under CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+// Twitter: https://twitter.com/JoeyDeVriez
+
+#ifndef MESH_H
 #define MESH_H
 
 #include <glad/glad.h> // holds all OpenGL type declarations
