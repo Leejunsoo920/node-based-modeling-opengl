@@ -21,7 +21,7 @@
 
 // system logic run in all modes -> defined in the base class "Mode"
 // vertex num check to vertex picking 
-int Vertex_Picking::picking_vertex_num = - -1;
+int Vertex_Picking::picking_vertex_num = -1;
 
 class Mode
 {
@@ -332,8 +332,6 @@ public:
         float windowWidth = (float)ImGui::GetWindowWidth();
         float windowHeight = (float)ImGui::GetWindowHeight();
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, window_width, window_height);
-
-        std::cout << ImGui::GetWindowPos().x  << "  "<< ImGui::GetWindowPos().y << std::endl;
         ImGui::End();
 
         inputctrl_global->scene_pos_x = pos.x;
