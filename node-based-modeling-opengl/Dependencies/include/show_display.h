@@ -315,13 +315,13 @@ public:
         ImVec2 pos = ImGui::GetCursorScreenPos();
         const float window_width = ImGui::GetContentRegionAvail().x;
         const float window_height = ImGui::GetContentRegionAvail().y;
-        glViewport(0, 0, 1800, 1000);
-        framebuffer.bind_framebuffer(1800, 1000);
-        framebuffer.rescale_framebuffer(1800, 1000);
+        glViewport(0, 0, window_width, window_height);
+        framebuffer.bind_framebuffer(window_width, window_height);
+        framebuffer.rescale_framebuffer(window_width, window_height);
         ImGui::GetWindowDrawList()->AddImage(
             (void*)framebuffer.texture_id,
             ImVec2(0, 0),
-            ImVec2(1800, 1000),
+            ImVec2(window_width, window_height),
             ImVec2(0, 1),
             ImVec2(1, 0));
 
@@ -331,15 +331,17 @@ public:
 
         float windowWidth = (float)ImGui::GetWindowWidth();
         float windowHeight = (float)ImGui::GetWindowHeight();
-        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, 1800, 1000);
+        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, window_width, window_height);
+
+        std::cout << ImGui::GetWindowPos().x  << "  "<< ImGui::GetWindowPos().y << std::endl;
         ImGui::End();
 
         inputctrl_global->scene_pos_x = pos.x;
         inputctrl_global->scene_pos_y = pos.y;
         inputctrl_global->window_width = window_width;
         inputctrl_global->window_height = window_height;
-        inputctrl_global->scene_width = 1800;
-        inputctrl_global->scene_height = 1000;
+        inputctrl_global->scene_width = window_width;
+        inputctrl_global->scene_height = window_height;
 
         glClearColor(inputctrl_global->scene_color[0], inputctrl_global->scene_color[1], inputctrl_global->scene_color[2], inputctrl_global->scene_color[3]);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
