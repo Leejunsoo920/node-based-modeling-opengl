@@ -823,7 +823,7 @@ void Node_manager::imgui_render()
 				{
 					std::string object_name = jnode["object_name"];
 
-					delegate.gen_node(nodeRectangleMin, (object_name).c_str(), pre_object_map[object_name], this->object_count, pre_shader_map["skin"]);
+					delegate.gen_node(nodeRectangleMin, (object_name).c_str(), pre_object_map[object_name], this->object_count, pre_shader_map["nomal shader"]);
 				}
 				else if (name == "animation")
 				{

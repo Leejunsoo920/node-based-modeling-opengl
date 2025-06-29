@@ -38,7 +38,7 @@ struct Object_setting
 public:
 	static int object_num;
 
-	Model object;
+	Model object = Model() ;
 	std::string name;
 	std::shared_ptr<Shader> shader;
 	glm::vec3 object_color = glm::vec3(1.0f, 1.0f, 0.31f);
@@ -66,7 +66,7 @@ public:
 		this->name.append(std::to_string(-1));
 		this->shader = shader;
 
-		Model empty_model;
+		Model empty_model = Model();
 		this->object = empty_model;
 	}
 
@@ -76,7 +76,7 @@ public:
 		this->name.append(std::to_string(-1));
 		this->shader = shader;
 
-		Mesh empty_mesh;
+		Mesh empty_mesh = Mesh();
 		Model empty_model(empty_mesh);
 		this->object = empty_model;
 	}

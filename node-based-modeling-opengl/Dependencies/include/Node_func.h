@@ -689,7 +689,7 @@ class Node_generate_circle_object : public Node
 public:
     std::vector<std::shared_ptr<Object_setting>> initial_value;
     int initial_vertex_num = 12;
-    float initial_radius = 0.02;
+    float initial_radius = 0.5;
 
     Node_generate_circle_object(
         const std::string& name,
