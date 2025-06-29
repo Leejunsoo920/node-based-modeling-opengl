@@ -17,11 +17,9 @@ extern Frame_manager frame_manager;
 constexpr unsigned int hash_table(const char* str)
 {
 	////check const char* by ternary operator
-	return str[0] ? static_cast<unsigned int>(str[0]) + 0xEDB8832Full * hash_table(str + 1) : 8603;
+	return str[0] ? static_cast<unsigned int>(str[0]) + 0xEDB8832Full * hash_table(str + 1) : 8603;//// if str[0] == null -> 8603
 }
-constexpr unsigned int Hash(const char* str) {
-	return str[0] ? static_cast<unsigned int>(str[0]) + 0xEDB8832Full * Hash(str + 1) : 8603;
-}
+
 
 void Node::imgui_render()
 {
@@ -676,27 +674,29 @@ void Node_manager::imgui_render()
 			fit = GraphEditor::Fit_SelectedNodes;
 		}
 		ImGui::SameLine();
-
+		
 		////node save system 
 		nlohmann::json j;
 		ImGui::SameLine();
 		if (ImGui::Button("save all node"))
 		{
+			//// get node imgui visualize option
 			j["view_position"] = { viewState.mPosition.x, viewState.mPosition.y };
 			j["view_factor"] = viewState.mFactor;
-
 			ImVec2 offset = ImGui::GetCursorScreenPos() + viewState.mPosition * viewState.mFactor;
 			j["view_offset"] = { offset.x, offset.y };
 			
 
-
+			//// get nodes option
 			for (auto& node : delegate.mNodes)
 			{
 
 				nlohmann::json jnode;
 
-				if (node->name.rfind("object", 0) == 0 && node->name.length() > 6) {
 
+
+				////classify object(imported model), gen object(are made by system), others
+				if (node->name.rfind("object", 0) == 0 && node->name.length() > 6) {
 					jnode["name"] = "object";
 					jnode["object_name"] = node->name.substr(6);
 				}
@@ -759,6 +759,8 @@ void Node_manager::imgui_render()
 
 			std::regex pattern(R"(node_data_(\d{8}_\d{6})\.json)");
 
+
+			//// find last node data by data name
 			for (const auto& entry : fs::directory_iterator("node_data")) {
 				if (entry.is_regular_file()) {
 					std::smatch match;
@@ -838,7 +840,8 @@ void Node_manager::imgui_render()
 
 				delegate.mNodes.back()->x = nodeRectangleMin.x;
 				delegate.mNodes.back()->y = nodeRectangleMin.y;
-				delegate.mNodes.back()->Draw_check = jnode["Draw"];
+				if(jnode.contains("Draw"))
+					delegate.mNodes.back()->Draw_check = jnode["Draw"];
 				if (jnode.contains("initial_setting")) {
 					auto values = deserialize_initial_value(jnode["initial_setting"]);
 					delegate.mNodes.back()->initial_setting(values);
@@ -847,7 +850,7 @@ void Node_manager::imgui_render()
 
 			}
 
-			// 링크 연결
+			// get link
 			for (const auto& jlink : j["links"]) {
 				int inNode = jlink[0];
 				int inSlot = jlink[1];
@@ -871,7 +874,6 @@ void Node_manager::imgui_render()
 		}
 		ImGui::End();
 	}
-
 
 
 
@@ -967,6 +969,7 @@ std::vector<ValueVariant> Node_manager::deserialize_initial_value(const nlohmann
 	return result;
 }
 
+
 void Node_manager::imgui_node_property_render(
 	const glm::mat4& projection,
 	const glm::mat4& view,
@@ -984,27 +987,27 @@ void Node_manager::imgui_node_property_render(
 
 	ImGui::Begin("node property");
 	{
+		//Run evaluation for all sorted node
+		// sorting is already done by topological sort when nodes, links and their value are changed 
 		for (auto& graph_index : delegate.sorted_graph)
 		{
 			delegate.mNodes[graph_index]->evaluate();
-
 		}
 
-		glEnable(GL_DEPTH_TEST);
 
+		// check node's Draw option for all sorted node and real draw 
 		for (auto& graph_index : delegate.sorted_graph)
 		{
-
+			// if node draw option is ture and evaluated was done
 			if (delegate.mNodes[graph_index]->Draw_check && delegate.mNodes[graph_index]->evaluated)
 			{
-				//bool check = delegate.mNodes[graph_index]->Draw(projection, view, camera_position);
-
-				if (delegate.mNodes[graph_index]->Draw(projection, view, camera_position)&& delegate.mNodes[graph_index]->mSelected)
+				// if draw is done, draw func return true
+				if (delegate.mNodes[graph_index]->Draw(projection, view, camera_position) && delegate.mNodes[graph_index]->mSelected)
 				{
 					Gizmo gizmo;
-					//// check vertex num of object
-					//// if select object node or ver3 , you can select one point by shift + mousedown
-					check_vertex_num(delegate.mNodes[graph_index]->return_vertex_pos()); 
+					//// check vertex num of object by mouse pointing
+					//// if select object node, ver3, mat4  , you can select one point by shift + mousedown
+					check_vertex_num(delegate.mNodes[graph_index]->return_vertex_pos());
 
 					if (io.MouseClicked[0] && io.KeyShift)
 					{
@@ -1026,16 +1029,22 @@ void Node_manager::imgui_node_property_render(
 					}
 
 
-
+					// if have select vertex, provide gizmo options
 					if (delegate.mNodes[graph_index]->select_vertex_num.size() > 0)
-						{
+					{
 						if (gizmo.origin_matrix.size() == 0)
 						{
+
 							gizmo.origin_matrix.push_back(delegate.mNodes[graph_index]->return_transform(delegate.mNodes[graph_index]->select_vertex_num[0]));
 							gizmo.gizmo_matrix = gizmo.origin_matrix[0];
+							//Currently, the gizmo is provided for a single vertex only,
+							//but to support future cases where multiple vertices are selected and manipulated simultaneously using the gizmo, 
+							// the (vertex) origin matrix is stored as a vector.
 
 						}
 
+
+						//calcuate gizmo's translation matrix by user mouse interaction
 						if (inputctrl_global->now_gizmo_state == Gizmo_state::TRANSLATE)
 						{
 							ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection),
@@ -1052,14 +1061,15 @@ void Node_manager::imgui_node_property_render(
 
 
 						glm::vec3 gizmo_result = gizmo.gizmo_matrix * glm::vec4(0, 0, 0, 1);
+						debug.set_point_group("gizmo result", gizmo_result, glm::vec3(1, 0, 0), 0.35); // draw point that selected vertex position
 
-						debug.set_point_group("gizmo result", gizmo_result,glm::vec3(1,0,0),0.35);
+
 
 						if (io.MouseDown[0])
 							delegate.mNodes[graph_index]->set_transform(gizmo.gizmo_matrix, delegate.mNodes[graph_index]->select_vertex_num[0]);
 
 					}
-				
+
 				}
 				else
 				{
@@ -1081,6 +1091,5 @@ void Node_manager::imgui_node_property_render(
 
 	}
 	ImGui::End();
-
 
 }
