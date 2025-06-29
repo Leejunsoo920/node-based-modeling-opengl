@@ -994,6 +994,7 @@ void Node_manager::imgui_node_property_render(
 			delegate.mNodes[graph_index]->evaluate();
 		}
 
+		glEnable(GL_DEPTH_TEST);
 
 		// check node's Draw option for all sorted node and real draw 
 		for (auto& graph_index : delegate.sorted_graph)
